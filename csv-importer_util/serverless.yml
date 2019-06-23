@@ -1,0 +1,15 @@
+service: csv-importer-util
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-east-1
+
+layers:
+  csv-importer:
+    path: layers/csv-importer
+    name: ${self:service}-csv-importer
+    compatibleRuntimes:
+      - python3.7
+    allowedAccounts:
+      - '*'

@@ -1,0 +1,9 @@
+{
+  "account_number": "account_number",
+  "age": "age",
+  "city": "city",
+  "email": "email",
+  "firstname": "firstname",
+  "gender": "gender",
+  "lastname": "lastname"
+}

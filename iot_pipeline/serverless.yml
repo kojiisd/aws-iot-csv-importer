@@ -1,0 +1,34 @@
+service: aws-iot-csv-importer-pipeline
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "dynamodb:DescribeTable"
+        - "dynamodb:Query"
+        - "dynamodb:Scan"
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+        - "iotanalytics:*"
+      Resource: "*"
+
+  environment:
+    DYNAMODB_TABLE: csv_importer_accounts
+    CONF_PATH: conf/config.json
+
+functions:
+  import-to-dynamodb:
+    handler: src/csv_importer_store.store_data_lambda
+    memorySize: 512
+    timeout: 60
+    layers:
+      - arn:aws:lambda:us-east-1:XXXXXXXXXXXX:layer:pandas-util-pandas:2
+

@@ -1,0 +1,27 @@
+service: aws-iot-csv-importer-analytics
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+        - "s3:ListBucket"
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "iotanalytics:*"
+      Resource: "*"
+
+  environment:
+    DATA_BATCH_SIZE: 100
+
+functions:
+  csv-importer-to-iot-analytics:
+    handler: src/data_sender_to_iot_analytics.send_data_lambda
+    memorySize: 256
+    timeout: 30
+    layers:
+      - arn:aws:lambda:us-east-1:XXXXXXXXXXXX:layer:pandas-util-pandas:2
